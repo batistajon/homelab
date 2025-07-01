@@ -1,0 +1,3 @@
+kubectl create secret generic cloudflare-api-token \
+  -n traefik \
+  --from-literal=CF_API_TOKEN=your_cloudflare_api_token

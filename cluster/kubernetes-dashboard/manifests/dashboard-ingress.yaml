@@ -1,0 +1,21 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: dashboard-https
+  namespace: kubernetes-dashboard
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`dashboard.jonbatista.dev`)
+      kind: Rule
+      middlewares:
+        - name: dashboard-headers
+      services:
+        - name: kubernetes-dashboard-web
+          port: 8000
+          scheme: http
+  tls:
+    certResolver: le
+    domains:
+      - main: dashboard.jonbatista.dev

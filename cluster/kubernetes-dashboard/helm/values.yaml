@@ -1,0 +1,20 @@
+# Updated Kubernetes Dashboard Configuration
+extraArgs:
+  - --enable-insecure-login
+  - --disable-settings-authorizer
+  - --system-banner="Development Environment"
+  - --enable-skip-login
+protocolHttp: false  # Changed to false for HTTPS
+
+service:
+  type: ClusterIP
+  externalPort: 443  # Changed from 80
+  internalPort: 8443  # Changed from 9090
+  targetPort: 8443
+
+metricsScraper:
+  enabled: true
+
+# Disable Kong completely since we're using Traefik
+kong:
+  enabled: false

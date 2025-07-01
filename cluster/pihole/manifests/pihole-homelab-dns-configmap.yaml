@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pihole-custom-dns
+  namespace: pihole
+data:
+  99-homelab.conf: |
+    address=/grafana.home/192.168.15.240
+    address=/prometheus.home/192.168.15.240
+    address=/pihole.home/192.168.15.241
+

@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kubernetes-dashboard-kong-proxy
+  namespace: kubernetes-dashboard
+spec:
+  type: LoadBalancer
+  selector:
+    app.kubernetes.io/name: kubernetes-dashboard-kong
+    app.kubernetes.io/component: kong
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8000
+    - name: https
+      port: 443
+      targetPort: 8443
+

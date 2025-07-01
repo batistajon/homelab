@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pihole
+  namespace: pihole
+spec:
+  selector:
+    matchLabels:
+      app: pihole
+  template:
+    metadata:
+      labels:
+        app: pihole
+    spec:
+      containers:
+      - name: pihole
+        image: pihole/pihole:latest
+        volumeMounts:
+        - name: custom-dns
+          mountPath: /etc/dnsmasq.d/99-homelab.conf
+          subPath: 99-homelab.conf
+      volumes:
+      - name: custom-dns
+        configMap:
+          name: pihole-custom-dns

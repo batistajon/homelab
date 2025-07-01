@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: traefik
+  namespace: traefik
+  labels:
+    app: traefik
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: traefik
+  template:
+    metadata:
+      labels:
+        app: traefik
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - master
+      containers:
+        - name: traefik
+          image: traefik:v2.11
+          args:
+            - "--api.dashboard=true"
+            - "--providers.kubernetescrd=true"
+            - "--entrypoints.web.address=:80"
+            - "--entrypoints.websecure.address=:443"
+            - "--log.level=DEBUG"
+            - "--certificatesresolvers.le.acme.email=jon@jonbatista.dev"
+            - "--certificatesresolvers.le.acme.storage=/data/acme.json"
+            - "--certificatesresolvers.le.acme.dnschallenge=true"
+            - "--certificatesresolvers.le.acme.dnschallenge.provider=cloudflare"
+            - "--certificatesresolvers.le.acme.caserver=https://acme-v02.api.letsencrypt.org/directory"
+            - "--certificatesresolvers.le.acme.dnschallenge.delayBeforeCheck=90"
+            - "--certificatesresolvers.le.acme.dnschallenge.resolvers=1.1.1.1:53,8.8.8.8:53"
+          env:
+            - name: CF_DNS_API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: cloudflare-api-token
+                  key: CF_API_TOKEN
+          ports:
+            - name: web
+              containerPort: 80
+            - name: websecure
+              containerPort: 443
+          volumeMounts:
+            - name: config
+              mountPath: /etc/traefik
+            - name: acme-storage
+              mountPath: /data
+      volumes:
+        - name: config
+          emptyDir: {}
+        - name: acme-storage
+          persistentVolumeClaim:
+            claimName: traefik-acme
