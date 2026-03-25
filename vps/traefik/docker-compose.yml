@@ -26,22 +26,24 @@ services:
     networks:
       - traefik-net
     labels:
-      # Dashboard UI (protected)
+      # Dashboard UI - HIGH PRIORITY (1000)
       - "traefik.enable=true"
-      - "traefik.http.routers.dashboard-ui.rule=Host(`traefik.jonbatista.dev`) && PathPrefix(`/dashboard`)"
+      - "traefik.http.routers.dashboard-ui.rule=Host(`traefik.jonbatista.dev`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api/health`))"
       - "traefik.http.routers.dashboard-ui.service=api@internal"
       - "traefik.http.routers.dashboard-ui.entrypoints=websecure"
       - "traefik.http.routers.dashboard-ui.tls.certresolver=myresolver"
       - "traefik.http.routers.dashboard-ui.middlewares=dashboard-auth"
+      - "traefik.http.routers.dashboard-ui.priority=1000"
 
-      # Dashboard API + static files (unprotected)
-      - "traefik.http.routers.dashboard-api.rule=Host(`traefik.jonbatista.dev`) && (PathPrefix(`/api`) || PathPrefix(`/static`))"
+      # Dashboard API calls - HIGH PRIORITY (999)
+      - "traefik.http.routers.dashboard-api.rule=Host(`traefik.jonbatista.dev`) && PathPrefix(`/api`)"
       - "traefik.http.routers.dashboard-api.service=api@internal"
       - "traefik.http.routers.dashboard-api.entrypoints=websecure"
       - "traefik.http.routers.dashboard-api.tls.certresolver=myresolver"
+      - "traefik.http.routers.dashboard-api.priority=999"
 
-      # Basic auth middleware
-      - "traefik.http.middlewares.dashboard-auth.basicauth.users=jon:jon:$apr1$tClSwiXh$vzaCfBTBvtILOGinbNPQK1"
+      # Basic auth
+      - "traefik.http.middlewares.dashboard-auth.basicauth.users=jon:$apr1$tClSwiXh$vzaCfBTBvtILOGinbNPQK1"
 networks:
   traefik-net:
     name: traefik-net
