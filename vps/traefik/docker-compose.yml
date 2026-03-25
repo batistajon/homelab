@@ -43,7 +43,7 @@ services:
       - "traefik.http.routers.dashboard-api.priority=999"
 
       # Basic auth
-      - "traefik.http.middlewares.dashboard-auth.basicauth.users=jon:$apr1$tClSwiXh$vzaCfBTBvtILOGinbNPQK1"
+      # - "traefik.http.middlewares.dashboard-auth.basicauth.users=jon:$apr1$tClSwiXh$vzaCfBTBvtILOGinbNPQK1"
 networks:
   traefik-net:
     name: traefik-net
