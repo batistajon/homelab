@@ -41,7 +41,7 @@ services:
       - "traefik.http.routers.dashboard-api.tls.certresolver=myresolver"
 
       # Basic auth middleware
-      - "traefik.http.middlewares.dashboard-auth.basicauth.users=jon:$apr1$KYJMCJan$j7KMbRohshO..h1qdJ3Y4."
+      - "traefik.http.middlewares.dashboard-auth.basicauth.users=jon:jon:$apr1$tClSwiXh$vzaCfBTBvtILOGinbNPQK1"
 networks:
   traefik-net:
     name: traefik-net
