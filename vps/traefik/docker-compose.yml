@@ -31,8 +31,8 @@ services:
       - "traefik.http.routers.dashboard.service=api@internal"
       - "traefik.http.routers.dashboard.entrypoints=websecure"
       - "traefik.http.routers.dashboard.tls.certresolver=myresolver"
-      - "traefik.http.routers.dashboard.middlewares=dashboard-auth"
-      - "traefik.http.middlewares.dashboard-auth.basicauth.users=jon:$apr1$tClSwiXh$vzaCfBTBvtILOGinbNPQK1"
+      # - "traefik.http.routers.dashboard.middlewares=dashboard-auth"
+      # - "traefik.http.middlewares.dashboard-auth.basicauth.users=jon:$apr1$tClSwiXh$vzaCfBTBvtILOGinbNPQK1"
 networks:
   traefik-net:
     name: traefik-net
