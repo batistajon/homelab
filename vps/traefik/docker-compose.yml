@@ -42,6 +42,7 @@ services:
 
       # Basic auth middleware
       - "traefik.http.middlewares.dashboard-auth.basicauth.users=jon:$apr1$/lTnmJLy$H3QCp4.1FfkLHUMeQ7ulm0"
+networks:
   traefik-net:
     name: traefik-net
 
