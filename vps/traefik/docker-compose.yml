@@ -25,6 +25,14 @@ services:
       - --certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json
     networks:
       - traefik-net
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dashboard.rule=Host(`traefik.jonbatista.dev`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))"
+      - "traefik.http.routers.dashboard.service=api@internal"
+      - "traefik.http.routers.dashboard.entrypoints=websecure"
+      - "traefik.http.routers.dashboard.tls.certresolver=myresolver"
+      - "traefik.http.routers.dashboard.middlewares=dashboard-auth"
+      - "traefik.http.middlewares.dashboard-auth.basicauth.users=jon:$apr1$/lTnmJLy$H3QCp4.1FfkLHUMeQ7ulm0"
 networks:
   traefik-net:
     name: traefik-net
