@@ -41,9 +41,6 @@ services:
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DEFAULT_DB}
-      MYSQL_USER: ${MYSQL_APP_USER}
-      MYSQL_PASSWORD: ${MYSQL_APP_PASSWORD}
     command:
       - --default-authentication-plugin=mysql_native_password
     volumes:
